@@ -45,15 +45,15 @@ def harmonyBridge(private_key):
         
         tx_receipt = web3.eth.wait_for_transaction_receipt(raw_tx_hash, timeout=900)
         if tx_receipt.status == 1:
-            logger.success(f'Bridge {round(valueRandom,6)} BNB to Harmony success - https://bscscan.com/tx/{tx_hash}\n')
+            logger.success(f'Bridge {valueRandom} BNB to Harmony success - https://bscscan.com/tx/{tx_hash}\n')
         else:
             time.sleep(60)
             tx_receipt = w3.eth.get_transaction_receipt(tx_hash)
             status = tx_receipt.status
             if status == 1:
-                logger.success(f'Bridge {round(valueRandom,6)} BNB to Harmony success - https://bscscan.com/tx/{tx_hash}\n')
+                logger.success(f'Bridge {valueRandom} BNB to Harmony success - https://bscscan.com/tx/{tx_hash}\n')
             else:
-                logger.error(f'Bridge {round(valueRandom,6)} BNB failed: https://bscscan.com/tx/{tx_hash}\n')
+                logger.error(f'Bridge {valueRandom} BNB failed: https://bscscan.com/tx/{tx_hash}\n')
 
     except Exception as error:
         logger.error(error)
