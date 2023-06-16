@@ -5,19 +5,19 @@ from decimal import Decimal
 from loguru import logger
 from tqdm import tqdm
 from sys import stderr
-time_delay_min = 600  # Min delay between each account
-time_delay_max = 900  # Max delay between each account
+
+time_delay_min = 120  # Min delay between each account
+time_delay_max = 180  # Max delay between each account
+repeats = 10 # How much runs this script will do. Must be > 0
+amount = {"min": 0.0004, "max": 0.00043} # Amount to bridge min/max. Min value maust be 0.0004 and higher or tx fail!
 
 logger.remove()
 logger.add(stderr, format="<lm>{time:YYYY-MM-DD HH:mm:ss}</lm> | <level>{level: <8}</level>| <lw>{message}</lw>")
 
-"""
-Harmony-bridge-farm script by @Pearlsome https://t.me/legalcrypt
-"""
-
 def harmonyBridge(private_key):
     try:
         web3 = Web3(Web3.HTTPProvider('https://rpc.ankr.com/bsc'))
+        w3 = Web3(Web3.HTTPProvider('https://bscrpc.com'))
         address_wallet = web3.eth.account.from_key(private_key).address
         logger.info(f'Current account - {address_wallet}')
         addres_contract = Web3.to_checksum_address('0x128aedc7f41ffb82131215e1722d8366faad0cd4')
@@ -25,7 +25,7 @@ def harmonyBridge(private_key):
         
         _dstChainId = 116
         _tokenId = 213090883261711
-        valueRandom = Decimal(random.randint(38, 43) / 100000)
+        valueRandom = Decimal(round(random.uniform(amount['min'], amount['max']), 7))
         _zroPaymentAddress = '0x0000000000000000000000000000000000000000'
         _adapterParams = "0x000100000000000000000000000000000000000000000000000000000000000aae60"
         contract_data = web3.eth.contract(address=addres_contract, abi=abi)
@@ -43,13 +43,17 @@ def harmonyBridge(private_key):
         raw_tx_hash = web3.eth.send_raw_transaction(signed_tx.rawTransaction)
         tx_hash = web3.to_hex(raw_tx_hash)
         
-        tx_receipt = web3.eth.wait_for_transaction_receipt(raw_tx_hash, timeout=600)
+        tx_receipt = web3.eth.wait_for_transaction_receipt(raw_tx_hash, timeout=900)
         if tx_receipt.status == 1:
             logger.success(f'Bridge {round(valueRandom,6)} BNB to Harmony success - https://bscscan.com/tx/{tx_hash}\n')
         else:
-            logger.error(f'Bridge {round(valueRandom,6)} BNB failed')
-            
-        return 1
+            time.sleep(60)
+            tx_receipt = w3.eth.get_transaction_receipt(tx_hash)
+            status = tx_receipt.status
+            if status == 1:
+                logger.success(f'Bridge {round(valueRandom,6)} BNB to Harmony success - https://bscscan.com/tx/{tx_hash}\n')
+            else:
+                logger.error(f'Bridge {round(valueRandom,6)} BNB failed: https://bscscan.com/tx/{tx_hash}\n')
 
     except Exception as error:
         logger.error(error)
@@ -64,12 +68,15 @@ if __name__ == '__main__':
     with open("private_key.txt", "r") as f:
         keys_list = [row.strip() for row in f]
 
-    while keys_list:
-        key = keys_list.pop(0)
-        harmonyBridge(key)
-        sleepDelay = random.randint(time_delay_min, time_delay_max)
-        for i in tqdm(range(sleepDelay), desc='sleep ', bar_format='{desc}: {n_fmt}/{total_fmt}'):
-            time.sleep(1)
+    for i in range(repeats):
+        print(f'Repeat # {i + 1}/{repeats}:')
         print()
-
-    print('Subscribe if you want more https://t.me/legalcrypt')
+        keys_list2 = keys_list.copy()
+        while keys_list2:
+            key = keys_list2.pop(0)
+            harmonyBridge(key)
+            sleepDelay = random.randint(time_delay_min, time_delay_max)
+            for i in tqdm(range(sleepDelay), desc='sleep ', bar_format='{desc}: {n_fmt}/{total_fmt}'):
+                time.sleep(1)
+            print()
+    print('Done! Subscribe if you want more https://t.me/legalcrypt')
