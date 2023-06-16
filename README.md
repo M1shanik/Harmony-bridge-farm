@@ -3,7 +3,7 @@ This script bridge ~0.0004 BNB (random values) from BSC network to Harmony chain
 
 ## Prerequisites
 
-- Topup your account with BNB in BSC network
+- Top up your account with BNB in BSC network
 - Add private keys to data.txt (one line - one key)
 - You might change min/max delay between accounts in harmony-bridge-bsc.py
 
