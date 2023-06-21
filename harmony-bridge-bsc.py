@@ -27,7 +27,7 @@ def harmonyBridge(private_key):
         _dstChainId = 116
         amountSend = Decimal(round(random.uniform(amount['min'], amount['max']), 7)
         txValueRandom = Decimal(round(random.uniform(feeL0['min'], feeL0['max']), 7))
-        _tokenId = Web3.to_wei(amountSend), "ether")
+        _tokenId = Web3.to_wei((amountSend), "ether")
         _zroPaymentAddress = '0x0000000000000000000000000000000000000000'
         _adapterParams = "0x000100000000000000000000000000000000000000000000000000000000000aae60"
         contract_data = web3.eth.contract(address=addres_contract, abi=abi)
