@@ -71,8 +71,8 @@ if __name__ == '__main__':
         keys_list = [row.strip() for row in f]
         
 
-    for i in range(repeats):
-        print(f'Repeat # {i + 1}/{repeats}:')
+    for k in range(repeats):
+        print(f'Repeat # {k + 1}/{repeats}:')
         print()
         keys_list2 = keys_list.copy()
         while keys_list2:
