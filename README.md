@@ -1,5 +1,5 @@
 # Harmony-bridge-farm
-This script bridge ~0.0004 BNB (random values) from BSC network to Harmony chain using Layerzero bridge. It costs you less then 0.1$ in total. Best way to farm layerzero activity so far.
+This script bridge ~0.0004 BNB (random values) from BSC network to Harmony chain using Layerzero bridge. It costs you less then 0.15$ in total. Best way to farm layerzero activity so far.
 
 ## Prerequisites
 
