@@ -9,8 +9,8 @@ from sys import stderr
 time_delay_min = 300  # Min delay between each account
 time_delay_max = 600  # Max delay between each account
 repeats = 10 # How many runs this script will do. Must be > 0
-feeL0 = {"min": 0.00028, "max": 0.00030} # TX value to pay Layerzero fee in BNB. Min value must be 0.00028! If TX fail - raise this value.
-amount = {"min": 0.00010, "max": 0.00012} # Amount to bridge in BNB min/max.
+feeL0 = {"min": 0.00034, "max": 0.00040} # TX value to pay Layerzero fee in BNB. Min value must be 0.00028! If TX fail - raise this value.
+amount = {"min": 0.00002, "max": 0.00003} # Amount to bridge in BNB min/max.
 
 logger.remove()
 logger.add(stderr, format="<lm>{time:YYYY-MM-DD HH:mm:ss}</lm> | <level>{level: <8}</level>| <lw>{message}</lw>")
